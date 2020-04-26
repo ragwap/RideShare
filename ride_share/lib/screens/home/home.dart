@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ride_share/screens/home/map_view.dart';
+import 'package:flutter/services.dart';
+import 'package:ride_share/screens/map/map_view.dart';
 import 'package:ride_share/services/auth.dart';
 
 class Home extends StatelessWidget {
@@ -60,6 +61,40 @@ class Home extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   SizedBox(height: 30.0,),
+                  SizedBox(width: 30.0,),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+                    child: Form(
+//                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(height: 20.0,),
+                            TextFormField(
+                                validator: (val) => val.isEmpty ? 'Enter Latitude coordinate' : null,
+                                decoration: InputDecoration(
+                                    labelText: 'Latitude'
+                                ),
+                                keyboardType: TextInputType.number,
+//                                onChanged: (val) {
+//                                  setState(() {
+//                                    email = val;
+//                                  });
+//                                }
+                            ),
+                            TextFormField(
+                              validator: (val) => val.isEmpty ? 'Enter Latitude coordinate' : null,
+                              decoration: InputDecoration(
+                                labelText: 'Longitude',
+                              ),
+                              keyboardType: TextInputType.number,
+//                              onChanged: (val) {
+//                                cpass = val;
+//                              },
+                            )
+                          ],
+                        )
+                    ),
+                  ),
                   Center(
                     child:
                     RaisedButton(
