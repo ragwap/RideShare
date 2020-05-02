@@ -38,6 +38,7 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   flutter_google_places: ^0.2.4
   devicelocale: ^0.2.3
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

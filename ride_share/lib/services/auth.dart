@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:intl/intl.dart';
 import 'package:ride_share/models/user.dart';
+import 'package:ride_share/services/database.dart';
 
 class AuthService {
 
@@ -31,6 +33,10 @@ class AuthService {
       if(password == cPassword) {
         AuthResult result = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password);
         FirebaseUser user = result.user;
+
+        //create a new document for the user with the uid
+        // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+        await DatabaseService(uid: user.uid).updateUserData('pickup', 'destination', DateTime.now(), 0.0);
         return _userFromFirebase(user);
       }
       else {

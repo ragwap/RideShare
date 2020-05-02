@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:location/location.dart' as loc;
 import 'package:ride_share/commons/loading.dart';
+import 'package:ride_share/screens/fare/fare.dart';
 import 'package:ride_share/services/GoogleMapsServices.dart';
 import 'package:ride_share/services/auth.dart';
 
@@ -53,22 +54,28 @@ class _MapViewState extends State<MapView> {
 //  );
 
   void _getUserLocation() async {
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    List <Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
+    try{
+      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      List <Placemark> placemark = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
 
-    _manipLat = position.latitude;
-    _manipLng = position.longitude;
+      _manipLat = position.latitude;
+      _manipLng = position.longitude;
 
-    setState(() {
-      _defaultPosition = LatLng(position.latitude, position.longitude);
-      print(_defaultPosition.longitude);
-      pickupController.text = placemark[0].name;
-//      _initialPosition = CameraPosition(
-//          target: _defaultPosition,
-//          zoom: 14.0
-//      );
-      print(placemark[0].name);
-    });
+      setState(() {
+        _defaultPosition = LatLng(position.latitude, position.longitude);
+        print(_defaultPosition.longitude);
+        pickupController.text = placemark[0].name;
+  //      _initialPosition = CameraPosition(
+  //          target: _defaultPosition,
+  //          zoom: 14.0
+  //      );
+        print(placemark[0].name);
+      });
+    }on PlatformException catch (e) {
+      if(e.code == 'PERMISSION DENIED') {
+        debugPrint("Permission Denied");
+      }
+    }
   }
 
 
@@ -242,6 +249,14 @@ class _MapViewState extends State<MapView> {
 
     String route = await _googleMapsServices.getRoute(pick, dest);
     _addPolyLine(route);
+    if (_controller != null) {
+      _controller.animateCamera(CameraUpdate.newCameraPosition(new CameraPosition(
+            bearing: 192.8334901395799,
+            target: LatLng(pLatitude, pLongitude),
+            tilt: 0,
+            zoom: 12.00
+          )));
+    }
     setState(() {
 
     });
@@ -333,7 +348,7 @@ class _MapViewState extends State<MapView> {
 
                     },
                     controller: pickupController,
-                    validator: (val) => val.isEmpty ? 'Enter Latitude coordinate' : null,
+                    validator: (val) => val.isEmpty ? 'Enter Pickup' : null,
                     decoration: InputDecoration(
                       icon: Container(
                         margin: EdgeInsets.only(left: 20),
@@ -341,12 +356,6 @@ class _MapViewState extends State<MapView> {
                       ),
                         labelText: 'Pickup'
                     ),
-//                    keyboardType: TextInputType.number,
-//                                onChanged: (val) {
-//                                  setState(() {
-//                                    email = val;
-//                                  });
-//                                }
                   ),
                 ),
               ),
@@ -393,50 +402,60 @@ class _MapViewState extends State<MapView> {
                           ),
                           labelText: 'Destination'
                       ),
-//                      keyboardType: TextInputType.number,
-//                                onChanged: (val) {
-//                                  setState(() {
-//                                    email = val;
-//                                  });
-//                                }
                     ),
                   ),
                 ),
                 Positioned(
                   bottom: 60,
-                  right: 85,
-                  left: 85,
-                  child: Container(
-                    height: 70.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.0),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(1.0, 5.0),
-                              blurRadius: 10,
-                              spreadRadius: 3
-                          )
-                        ]
+                  right: 150,
+                  left: 150,
+                  child: FloatingActionButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
                     ),
-                    child: TextFormField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                          icon: Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: Icon(Icons.monetization_on, color: Colors.black,),
-                          ),
-                          labelText: 'Fare'
-                      ),
-                    ),
+                    heroTag: 'fare',
+                      child: Text('Fare'),
+                      backgroundColor: Colors.black,
+                      onPressed: () {
+                        Navigator.of(context).push(PageRouteBuilder(
+                              pageBuilder: (context, animation, secondaryAnimation) => FareView(),
+                              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                var begin = Offset(0.0, 1.0);
+                                var end = Offset.zero;
+                                var curve = Curves.ease;
+
+                                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              },
+                            ));                      
+                      },
                   ),
+                  // child: Container(
+                  //   height: 70.0,
+                  //   width: double.infinity,
+                  //   decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(5.0),
+                  //       color: Colors.white,
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //             color: Colors.grey,
+                  //             offset: Offset(1.0, 5.0),
+                  //             blurRadius: 10,
+                  //             spreadRadius: 3
+                  //         )
+                  //       ]
+                  //   ),
+                  //   child: 
+                  // ),
                 ),
                 Positioned(
                   bottom: 60,
                   right: 20,
-                  child: FloatingActionButton(
+                  child: new FloatingActionButton(
                     heroTag: 'addTrip',
                       child: Icon(Icons.add),
                       backgroundColor: Colors.black,
@@ -449,7 +468,6 @@ class _MapViewState extends State<MapView> {
                         }
                         
                       },
-//                    onPressed: sendReq(pickupController.text.toString()),
                   ),
                 ),
                 Positioned(
