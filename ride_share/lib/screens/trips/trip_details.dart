@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ride_share/models/trip.dart';
+import 'package:ride_share/models/user.dart';
 import 'package:ride_share/screens/trips/trip_list.dart';
-import 'package:ride_share/services/auth.dart';
+// import 'package:ride_share/services/auth.dart';
 import 'package:ride_share/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -11,12 +12,11 @@ class TripDetails extends StatefulWidget {
 }
 
 class _TripDetailsState extends State<TripDetails> {
-  final AuthService _auth = AuthService();
-  
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return StreamProvider<List<Trip>>.value(
-      value: DatabaseService().trips,
+      value: DatabaseService(uid: user.uid).trips,
       child: SafeArea(
         child: Container(
             decoration: BoxDecoration(

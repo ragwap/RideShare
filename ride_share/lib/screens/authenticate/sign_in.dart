@@ -106,16 +106,14 @@ class _SignInState extends State<SignIn> {
                         ),
                         highlightColor: Colors.black,
                         onPressed: () async {
-//                      print(email);
-//                      print(password);
                           dynamic result = await _authService.signIn(email, password);
                           if(_formKey.currentState.validate()) {
                             if (result == null) {
-                              Fluttertoast.showToast(msg: 'Please provide valid credentials', timeInSecForIos: 5);
+                              Fluttertoast.showToast(msg: 'Please provide valid credentials', timeInSecForIos: 5, backgroundColor: Colors.black, textColor: Colors.white);
                             }
                             else {
                               Fluttertoast.showToast(
-                                  msg: 'Successfully signed in', timeInSecForIos: 5);
+                                  msg: 'Successfully signed in', timeInSecForIos: 5, backgroundColor: Colors.black, textColor: Colors.white);
                             }
                           }
                         },
@@ -128,9 +126,6 @@ class _SignInState extends State<SignIn> {
           ],
         ),
       ),
-//      child: Container(
-//        child: Text('authenticate'),
-//      ),
     );
   }
 }

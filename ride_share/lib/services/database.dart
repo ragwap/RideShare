@@ -3,14 +3,16 @@ import 'package:ride_share/models/trip.dart';
 import 'package:intl/intl.dart';
 
 class DatabaseService {
-
   final String uid;
   DatabaseService({this.uid});
 //  collection reference
-  final CollectionReference tripCollection = Firestore.instance.collection('trips');
+  final CollectionReference tripCollection =
+      Firestore.instance.collection('trips');
 
-  Future updateUserData(String pickup, String destination, DateTime dateTime, double fare) async {
-    return await tripCollection.document(uid).setData({
+  Future inputTripDetails(String user,
+      String pickup, String destination, Timestamp dateTime, double fare) async {
+    return await tripCollection.add({
+      'userId': user,
       'pickup': pickup,
       'destination': destination,
       'date': dateTime,
@@ -25,13 +27,25 @@ class DatabaseService {
       return Trip(
         pickup: doc.data['pickup'] ?? '',
         destination: doc.data['destination'] ?? '',
-        // dateTime: DateTime.parse(doc.data['date'].runtimeType) ?? '',
+        // dateTime: Timestamp.fromDate(doc.data['date']).toDate() ?? '',
         fare: doc.data['fare'] ?? 0.0,
       );
     }).toList();
   }
 
-  Stream<List<Trip>> get trips{
-    return tripCollection.snapshots().map(_tripsFromSnapshot);
+//Stream of trip data specified for a user.
+  getTrips() async {
+    return tripCollection.where('userId', isEqualTo: this.uid).snapshots();
+  }
+
+  Stream<List<Trip>> get trips {
+    return tripCollection
+        .where('userId', isEqualTo: this.uid)
+        .snapshots()
+        .map(_tripsFromSnapshot);
+  }
+
+  Future deleteTrips(String docId) async {
+    await tripCollection.document(docId).delete();
   }
 }
