@@ -10,7 +10,7 @@ class DatabaseService {
       Firestore.instance.collection('trips');
 
   Future inputTripDetails(String user,
-      String pickup, String destination, Timestamp dateTime, double fare) async {
+      String pickup, String destination, DateTime dateTime, double fare) async {
     return await tripCollection.add({
       'userId': user,
       'pickup': pickup,
@@ -23,11 +23,14 @@ class DatabaseService {
   //Trip list from snapshot
   List<Trip> _tripsFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
-//      DateTime date = doc.data['date'].toDate();
+    Timestamp date = doc.data['date'];
+    // var format = new DateFormat('yyyy-MM-dd hh:mm');
+
       return Trip(
         pickup: doc.data['pickup'] ?? '',
         destination: doc.data['destination'] ?? '',
-        // dateTime: Timestamp.fromDate(doc.data['date']).toDate() ?? '',
+        // dateTime: format.format(date.toDate())?? '',
+        dateTime: date.toDate(),
         fare: doc.data['fare'] ?? 0.0,
       );
     }).toList();

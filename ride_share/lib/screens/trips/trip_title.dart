@@ -52,7 +52,7 @@ class TripTitle extends StatelessWidget {
                   backgroundColor: Colors.white,
                 ),
                 title: Text('${trip.pickup} - ${trip.destination}'),
-                subtitle: Text('Fare: ${trip.fare.toString()}\nDate: ${trip.dateTime}'),
+                subtitle: Text('\nFare: LKR ${trip.fare.toString()}\n\nDate: ${trip.dateTime}'),
                 onLongPress: () {
                   _deleteConfirmation(docId);
                 },

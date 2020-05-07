@@ -14,7 +14,7 @@ class FareView extends StatelessWidget {
     final user = Provider.of<User>(context);
 
     void paid(String pickup, String destination, double fare) async {
-      await DatabaseService(uid: user.uid).inputTripDetails(user.uid, pickup, destination, Timestamp.now(), fare);  
+      await DatabaseService(uid: user.uid).inputTripDetails(user.uid, pickup, destination, DateTime.now(), fare);  
     }
 
     return SafeArea(
@@ -70,7 +70,7 @@ class FareView extends StatelessWidget {
                           radius: 25.0,
                           backgroundColor: Colors.white,
                         ),
-                        title: Text('Fare: LKR ${LocationLatLng.fare.toString()}'),
+                        title: Text('Fare: LKR ${double.parse((LocationLatLng.fare).toStringAsFixed(2))}'),
                       ),
                     ),
                   )),

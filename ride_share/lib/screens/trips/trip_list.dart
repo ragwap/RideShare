@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:ride_share/commons/loading.dart';
 import 'package:ride_share/models/trip.dart';
 import 'package:ride_share/screens/trips/trip_title.dart';
 import 'package:ride_share/services/auth.dart';
@@ -27,25 +29,31 @@ class _TripListState extends State<TripList> {
 
   @override
   Widget build(BuildContext context) {
-    final trips = Provider.of<List<Trip>>(context);
+    final trips = Provider.of<List<Trip>>(context) ?? [];
 
     return Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-      ),
-      child: StreamBuilder(
-          stream: tripSnapshots,
-          builder: (context, snapshot) {
-            return ListView.builder(
-              itemCount: trips.length,
-              itemBuilder: (context, index) {
-                return TripTitle(
-                    trip: trips[index],
-                    docId: snapshot.data.documents[index].documentID);
-              },
-            );
-          }),
-    );
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+        ),
+        child: StreamBuilder(
+            stream: tripSnapshots,
+            builder: (context, snapshot) {
+              if (trips.length == 0) {
+                Fluttertoast.showToast(
+                    msg: 'No trips to show',
+                    timeInSecForIos: 2,
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white);
+              }
+              return ListView.builder(
+                itemCount: trips.length,
+                itemBuilder: (context, index) {
+                  return TripTitle(
+                      trip: trips[index],
+                      docId: snapshot.data.documents[index].documentID);
+                },
+              );
+            }));
   }
 }

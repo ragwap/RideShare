@@ -118,17 +118,15 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
                             dynamic result = await _authService.register(email, password, cpass);
-//                      print(email);
-//                      print(password);
 
                             if(result == 'mismatch') {
-                              Fluttertoast.showToast(msg: 'Passwords do not match', timeInSecForIos: 5);
+                              Fluttertoast.showToast(msg: 'Passwords do not match', timeInSecForIos: 5,  backgroundColor: Colors.black, textColor: Colors.white);
                             }
                             else if (result == null) {
-                              Fluttertoast.showToast(msg: 'Provide a valid email', timeInSecForIos: 5);
+                              Fluttertoast.showToast(msg: 'Provide a valid email', timeInSecForIos: 5,  backgroundColor: Colors.black, textColor: Colors.white);
                             }
                             else {
-                              Fluttertoast.showToast(msg: 'Successfully Registered', timeInSecForIos: 5);
+                              Fluttertoast.showToast(msg: 'Successfully Registered', timeInSecForIos: 5,  backgroundColor: Colors.black, textColor: Colors.white);
                             }
                           }
                         },

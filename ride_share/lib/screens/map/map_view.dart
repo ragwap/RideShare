@@ -14,6 +14,8 @@ import 'package:ride_share/screens/home/home.dart';
 import 'package:ride_share/services/GoogleMapsServices.dart';
 import 'package:ride_share/services/auth.dart';
 
+import '../wrapper.dart';
+
 class MapView extends StatefulWidget {
   @override
   _MapViewState createState() => _MapViewState();
@@ -290,7 +292,7 @@ class _MapViewState extends State<MapView> {
                     onPressed: () =>
                         Navigator.of(context).push(PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          Home(),
+                          Wrapper(),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         var begin = Offset(0.0, 1.0);

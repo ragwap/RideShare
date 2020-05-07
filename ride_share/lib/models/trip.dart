@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Trip {
   String pickup;
   String destination;
-  Timestamp dateTime;
+  DateTime dateTime;
   double fare;
 
   Trip({
