@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_share/commons/loading.dart';
 import 'package:ride_share/models/trip.dart';
@@ -40,11 +39,7 @@ class _TripListState extends State<TripList> {
             stream: tripSnapshots,
             builder: (context, snapshot) {
               if (trips.length == 0) {
-                Fluttertoast.showToast(
-                    msg: 'No trips to show',
-                    timeInSecForIos: 2,
-                    backgroundColor: Colors.black,
-                    textColor: Colors.white);
+                Loading();
               }
               return ListView.builder(
                 itemCount: trips.length,

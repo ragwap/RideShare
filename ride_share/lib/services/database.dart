@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ride_share/models/trip.dart';
-import 'package:intl/intl.dart';
 
 class DatabaseService {
   final String uid;
@@ -24,12 +23,9 @@ class DatabaseService {
   List<Trip> _tripsFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
     Timestamp date = doc.data['date'];
-    // var format = new DateFormat('yyyy-MM-dd hh:mm');
-
       return Trip(
         pickup: doc.data['pickup'] ?? '',
         destination: doc.data['destination'] ?? '',
-        // dateTime: format.format(date.toDate())?? '',
         dateTime: date.toDate(),
         fare: doc.data['fare'] ?? 0.0,
       );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ride_share/models/trip.dart';
 import 'package:ride_share/models/user.dart';
 import 'package:ride_share/screens/trips/trip_list.dart';
-// import 'package:ride_share/services/auth.dart';
 import 'package:ride_share/services/database.dart';
 import 'package:provider/provider.dart';
 

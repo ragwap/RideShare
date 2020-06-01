@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:ride_share/models/location_latlng.dart';
 import 'package:ride_share/models/user.dart';
@@ -54,23 +52,26 @@ class FareView extends StatelessWidget {
               child: ListView(
                 children: <Widget>[
                   SizedBox(
-                    height: 30.0,
+                    height: 100.0,
                   ),
                   Center(
                       child: Padding(
                     padding: EdgeInsets.only(top: 8.0),
-                    child: Card(
-                      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(
-                            Icons.airport_shuttle,
-                            color: Colors.black,
+                    child: Container(
+                      height: 75.0,
+                                          child: Card(
+                        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Icon(
+                              Icons.airport_shuttle,
+                              color: Colors.black,
+                            ),
+                            radius: 25.0,
+                            backgroundColor: Colors.white,
                           ),
-                          radius: 25.0,
-                          backgroundColor: Colors.white,
+                          title: Text('Fare: LKR ${double.parse((LocationLatLng.fare).toStringAsFixed(2))}', style: TextStyle(fontSize: 30)),
                         ),
-                        title: Text('Fare: LKR ${double.parse((LocationLatLng.fare).toStringAsFixed(2))}'),
                       ),
                     ),
                   )),
@@ -78,73 +79,81 @@ class FareView extends StatelessWidget {
                     height: 30.0,
                   ),
                   Center(
-                    child: RaisedButton(
-                      color: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
+                    child: ButtonTheme(
+                      minWidth: 200.0,
+                      height: 50.0,
+                                          child: RaisedButton(
+                        color: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        highlightColor: Colors.black,
+                        onPressed: () {
+                          paid(LocationLatLng.pickup, LocationLatLng.destination, LocationLatLng.fare);
+                          Fluttertoast.showToast(
+                                    msg: 'Payment added successfully', timeInSecForIos: 8, backgroundColor: Colors.black, textColor: Colors.white);
+                          Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    MapView(),
+                            transitionsBuilder:
+                                (context, animation, secondaryAnimation, child) {
+                              var begin = Offset(0.0, 1.0);
+                              var end = Offset.zero;
+                              var curve = Curves.ease;
+
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ));
+                        },
+                        child: Text('Paid'),
+                        textColor: Colors.white,
                       ),
-                      highlightColor: Colors.black,
-                      onPressed: () {
-                        paid(LocationLatLng.pickup, LocationLatLng.destination, LocationLatLng.fare);
-                        Fluttertoast.showToast(
-                                  msg: 'Payment added successfully', timeInSecForIos: 8, backgroundColor: Colors.black, textColor: Colors.white);
-                        Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  MapView(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var begin = Offset(0.0, 1.0);
-                            var end = Offset.zero;
-                            var curve = Curves.ease;
-
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ));
-                      },
-                      child: Text('Paid'),
-                      textColor: Colors.white,
                     ),
                   ),
                   SizedBox(
                     height: 30.0,
                   ),
                   Center(
-                    child: RaisedButton(
-                      color: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
+                    child: ButtonTheme(
+                      minWidth: 200.0,
+                      height: 50.0,
+                                          child: RaisedButton(
+                        color: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                        highlightColor: Colors.black,
+                        onPressed: () {
+                          Navigator.of(context).push(PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    MapView(),
+                            transitionsBuilder:
+                                (context, animation, secondaryAnimation, child) {
+                              var begin = Offset(0.0, 1.0);
+                              var end = Offset.zero;
+                              var curve = Curves.ease;
+
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: child,
+                              );
+                            },
+                          ));
+                        },
+                        child: Text('Cancel'),
+                        textColor: Colors.white,
                       ),
-                      highlightColor: Colors.black,
-                      onPressed: () {
-                        Navigator.of(context).push(PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  MapView(),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var begin = Offset(0.0, 1.0);
-                            var end = Offset.zero;
-                            var curve = Curves.ease;
-
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ));
-                      },
-                      child: Text('Cancel'),
-                      textColor: Colors.white,
                     ),
                   ),
                 ],

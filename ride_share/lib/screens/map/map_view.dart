@@ -10,7 +10,6 @@ import 'package:location/location.dart' as loc;
 import 'package:ride_share/commons/loading.dart';
 import 'package:ride_share/models/location_latlng.dart';
 import 'package:ride_share/screens/fare/fare.dart';
-import 'package:ride_share/screens/home/home.dart';
 import 'package:ride_share/services/GoogleMapsServices.dart';
 import 'package:ride_share/services/auth.dart';
 
@@ -113,7 +112,6 @@ class _MapViewState extends State<MapView> {
   void getCurrentLocation() async {
     try {
       _counter = 0;
-      // var location = await _locationTracker.getLocation();
 
       if (_subscription != null) {
         _subscription.cancel();
