@@ -27,7 +27,7 @@ class _MapViewState extends State<MapView> {
   StreamSubscription _subscription;
   var _counter = 0;
   GoogleMapsServices _googleMapsServices = GoogleMapsServices();
-  static const apiKey = "AIzaSyD0AFY6FU9-ZWw6ADKaJOgFW1h9nPfpZtk";
+  static const apiKey = "API_KEY";
 
   TextEditingController pickupController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
